@@ -10,6 +10,12 @@ The joke is the surface. The point underneath is that a gag service can still be
 built with a proper service layer, pinned dependencies and a coverage gate that
 does not bend.
 
+> **Commercial licences available.** SnarkAPI is free and open source under the
+> GNU General Public License v3.0. If those terms do not suit what you are
+> building, such as a closed-source product, a commercial licence can be bought
+> from me separately. It covers my own code; third-party libraries keep their own
+> licences. See [commercial licensing](https://ernster.dev/commercial-licensing.html).
+
 ## Who it is for
 
 - Anyone who wants a one-line insult from an HTTP call: a bot, a build script, a
@@ -39,9 +45,12 @@ does not bend.
   by the application itself, because a crawler only honours them at the root.
 - **A favicon route.** `/favicon.ico` returns the stored PNG, so the browser's
   automatic request does not log a 404 on every visit.
-- **A quote supply that cannot take the service down.** The quotes load from a
-  JSON file at startup; if that file is missing, malformed or the wrong shape,
-  the service falls back to a small built-in set and carries on.
+- **A quote supply that cannot take the service down.** The quotes are read
+  from a JSON file on every request, so an edited file takes effect without a
+  restart; if that file is missing, malformed or the wrong shape, the service
+  falls back to a small built-in set and carries on.
+- **Analytics on the homepage only.** The rendered page loads Plausible's
+  analytics script; the plain-text endpoint returns the line and nothing else.
 
 ## Stack
 
@@ -70,10 +79,12 @@ app/
   core/config.py          settings
   data/quotes.json        the quote supply
   templates/              the rendered homepage
+  version.py              reads VERSION
 static/                   favicon, robots.txt, sitemap.xml
 docs/                     the GitHub Pages landing site
 tests/                    the test suite
 VERSION                   the single source of truth for the version
+stamp_version.py          copies VERSION into the landing site
 ```
 
 ## Install and run
@@ -146,3 +157,5 @@ time, so it carries stamped tokens refreshed by `stamp_version.py`.
 ## Licence
 
 GPL-3.0. See [LICENSE](LICENSE).
+
+Commercial licences are also available; see [commercial licensing](https://ernster.dev/commercial-licensing.html).

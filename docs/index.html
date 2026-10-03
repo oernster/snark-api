@@ -16,7 +16,7 @@
 <meta property="og:description" content="A tiny FastAPI service that hands you a freshly-crafted sarcastic remark on request. One endpoint, no auth, no feelings spared.">
 <meta property="og:url" content="https://ernster.dev/snark-as-a-service/">
 <meta property="og:image" content="https://ernster.dev/snark-as-a-service/assets/snarkapi.png">
-<meta property="og:image:alt" content="The SnarkAPI mascot: an unimpressed face mid-eye-roll">
+<meta property="og:image:alt" content="The SnarkAPI mascot: a smug face sticking its tongue out beside a censored curse">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SnarkAPI: condescension as a service">
 <meta name="twitter:description" content="A tiny FastAPI service that hands you a freshly-crafted sarcastic remark on request.">
@@ -76,7 +76,7 @@
       <div class="eyebrow">What you are signing up for</div>
       <h2 class="section-title">Rude but well-engineered</h2>
       <p class="section-sub">It is a joke service that takes its craft
-        seriously. Clean architecture on the inside, gentle character
+        seriously. A proper service layer on the inside, gentle character
         assassination on the outside.</p>
       <div class="features">
         <div class="feature">
@@ -87,9 +87,10 @@
         </div>
         <div class="feature">
           <div class="fnum">02</div>
-          <h3>Never the same slight twice</h3>
-          <p>A rotating supply of hand-written condescension, so it stays
-            fresh long after your self-esteem has not.</p>
+          <h3>A deep well of slights</h3>
+          <p>Each request draws at random from several hundred hand-written
+            lines of condescension, so it stays fresh long after your
+            self-esteem has not.</p>
         </div>
         <div class="feature">
           <div class="fnum">03</div>
@@ -100,8 +101,8 @@
         <div class="feature">
           <div class="fnum">04</div>
           <h3>Runs on FastAPI</h3>
-          <p>Ports, adapters and a proper service layer under the hood.
-            Even the sarcasm respects the dependency direction.</p>
+          <p>A thin route over a separate service layer, injected rather
+            than hardwired. Even the sarcasm respects the dependency direction.</p>
         </div>
         <div class="feature">
           <div class="fnum">05</div>
@@ -137,7 +138,7 @@ You&#8217;ve achieved the rare feat of being wrong in several dimensions.</pre>
         <code>https://www.snarkapi.com</code>. Or just open the
         <a href="https://www.snarkapi.com/">live site</a> and let it type at you.
         That is the whole surface: one endpoint and one homepage address, with
-        every other path folded into it.</p>
+        the old <code>/sarcasm</code> path redirecting to it.</p>
     </div>
   </section>
 </main>
@@ -147,7 +148,7 @@ You&#8217;ve achieved the rare feat of being wrong in several dimensions.</pre>
     <div>
       <strong>SnarkAPI</strong>: condescension as a service<br>
       (c) Oliver Ernster · Built with FastAPI · GPL-3.0 ·
-      v<!--VERSION-->1.4.0<!--/VERSION-->
+      v<!--VERSION-->1.4.1<!--/VERSION-->
     </div>
     <div class="footer-links">
       <a href="https://www.snarkapi.com/">Live site</a>
@@ -168,9 +169,9 @@ You&#8217;ve achieved the rare feat of being wrong in several dimensions.</pre>
     const SAMPLES = [
       'You’ve achieved the rare feat of being wrong in several dimensions.',
       'You treat regression like a form of nostalgia.',
-      'You scale systems like someone rearranging saltshakers.',
-      'Your DR strategy involves hope and hard drives older than the intern.',
-      'Your app has unlimited potential. Unfortunately, it is mostly theoretical.',
+      'You scale systems like someone rearranging sand during a storm.',
+      'You treat logs like personal diary entries.',
+      'You’ve weaponized ambiguity.',
     ]
     const TYPE_MS = 55
     const DELETE_MS = 26
