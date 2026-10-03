@@ -1,4 +1,4 @@
-"""Quote loading, and what happens when the quote file cannot be trusted.
+"""Quote loading; what happens when the quote file cannot be trusted.
 
 The service is deliberately unkillable: a missing, malformed or wrongly shaped
 quotes file must degrade to the built-in fallback rather than take the API
@@ -50,3 +50,12 @@ def test_the_fallback_is_not_empty():
     # _random_choice would raise on an empty sequence, so the fallback existing
     # is what makes the degraded path actually degrade rather than fail.
     assert SarcasmService._default_quotes()
+
+
+def test_the_shipped_quotes_hold_no_repeats():
+    # A repeated line is drawn twice as often as its neighbours. Loading through
+    # the default path keeps that path in one place: the service.
+    quotes = SarcasmService()._quotes
+
+    assert quotes != SarcasmService._default_quotes()
+    assert len(quotes) == len(set(quotes))
