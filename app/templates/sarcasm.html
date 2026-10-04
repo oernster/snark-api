@@ -109,6 +109,56 @@
           opacity: 0;
         }
       }
+      /* FuckWhatDay plug: a pulsing brain in the empty row below the quote.
+         Like the rain, the pulse always animates: the motion is the point. */
+      .promo {
+        grid-row: 5;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        max-width: calc(100% - 2rem);
+        margin: 1rem;
+        padding: 0.75rem 1.5rem 0.75rem 0.75rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: #ffffff;
+        text-decoration: none;
+        backdrop-filter: blur(4px);
+      }
+      .promo:hover {
+        background: rgba(255, 255, 255, 0.14);
+      }
+      .promo:focus-visible {
+        outline: 3px solid #ff6fa5;
+        outline-offset: 3px;
+      }
+      .promo img {
+        width: 80px;
+        height: 80px;
+        flex: none;
+        animation: brain-pulse 1.8s ease-in-out infinite;
+      }
+      .promo strong {
+        display: block;
+        font-size: 1.1rem;
+      }
+      .promo span {
+        display: block;
+        opacity: 0.85;
+        font-size: 0.92rem;
+      }
+      @keyframes brain-pulse {
+        0%,
+        100% {
+          transform: scale(1);
+          filter: drop-shadow(0 0 0 rgba(255, 111, 165, 0));
+        }
+        50% {
+          transform: scale(1.12);
+          filter: drop-shadow(0 0 18px rgba(255, 111, 165, 0.9));
+        }
+      }
     </style>
   </head>
   <body>
@@ -120,6 +170,16 @@
       </header>
 
       <main class="quote" id="quote">{{ quote }}</main>
+
+      <a class="promo" href="https://ernster.dev/FuckWhatDay/">
+        <img src="https://ernster.dev/FuckWhatDay/img/apple-touch-icon.png" width="80" height="80"
+             alt="FuckWhatDay: a brain in sunglasses holding a calendar" />
+        <div>
+          <strong>Don't know what day it is either?</strong>
+          <span>FuckWhatDay will tell you. It's written in Brainfuck, so it
+            takes half a million instructions and still judges you.</span>
+        </div>
+      </a>
     </div>
 
     <script>
@@ -240,7 +300,7 @@
 
     <script>
       // Lightweight canvas rain behind the content. Always animates (the page's
-      // motion is intentional), and naturally pauses when the tab is hidden.
+      // motion is intentional) and naturally pauses when the tab is hidden.
       (() => {
         const canvas = document.getElementById('rain')
         if (!canvas) return
