@@ -6,7 +6,6 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.requests import Request
 
-from app.api.v1 import sarcasm
 from app.core.config import settings
 from app.services.sarcasm_service import SarcasmService
 from app.version import __version__
@@ -20,11 +19,22 @@ templates = Jinja2Templates(directory="app/templates")
 
 PAGE_TITLE = "SnarkAPI: professional-grade condescension, on demand"
 STATIC_DIR = Path(__file__).resolve().parent.parent / "static"
+QUOTES_PATH = Path(__file__).resolve().parent / "data" / "quotes.json"
 
 # Serve files from ./static at /static
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-app.include_router(sarcasm.router, prefix="/api/v1/sarcasm")
+
+@app.get("/quotes.json", include_in_schema=False)
+def quotes_json() -> FileResponse:
+    """The whole quote list, from which the homepage picks in the browser.
+
+    The site is published as static files, which cannot choose a line per
+    request, so the choice moved to the page and this file replaced the old
+    plain-text endpoint.
+    """
+
+    return FileResponse(path=str(QUOTES_PATH), media_type="application/json")
 
 
 @app.get("/favicon.ico", include_in_schema=False)
@@ -66,12 +76,9 @@ def sitemap_xml() -> FileResponse:
 
 @app.get("/", include_in_schema=False)
 def root(request: Request):
-    """Homepage: render the styled sarcasm page.
+    """Homepage: render the styled sarcasm page with one quote already in it."""
 
-    (The plain-text API remains available at /api/v1/sarcasm/.)
-    """
-
-    quote = SarcasmService().get_quote()
+    quote = SarcasmService(str(QUOTES_PATH)).get_quote()
     return templates.TemplateResponse(
         request=request,
         name="sarcasm.html",

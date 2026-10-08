@@ -1,6 +1,5 @@
 # robots.txt for SnarkAPI (https://www.snarkapi.com/)
 User-agent: *
-Disallow: /api/
 Allow: /
 
 Sitemap: https://www.snarkapi.com/sitemap.xml

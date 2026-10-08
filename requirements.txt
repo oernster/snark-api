@@ -1,4 +1,4 @@
-# Pinned to a known-good, locally-verified set so Render rebuilds are
+# Pinned to a known-good, locally-verified set so CI builds are
 # reproducible. Unpinned deps let a redeploy silently pull a breaking
 # release. Re-freeze deliberately when upgrading.
 

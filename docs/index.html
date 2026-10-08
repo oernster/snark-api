@@ -4,26 +4,26 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SnarkAPI: professional-grade condescension, on demand</title>
-<meta name="description" content="SnarkAPI is a tiny FastAPI service that hands you a freshly-crafted sarcastic remark on request. One endpoint, no auth, no feelings spared.">
+<meta name="description" content="SnarkAPI is a tiny site that hands you a freshly-crafted sarcastic remark, then another. No auth, no feelings spared.">
 <meta name="keywords" content="SnarkAPI, sarcasm API, snark, FastAPI, developer humour, quotes API, Oliver Ernster">
 <meta name="author" content="Oliver Ernster">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#080c1f">
-<link rel="canonical" href="https://ernster.dev/snark-as-a-service/">
+<link rel="canonical" href="https://www.snarkapi.com/about/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="SnarkAPI">
 <meta property="og:title" content="SnarkAPI: condescension as a service">
-<meta property="og:description" content="A tiny FastAPI service that hands you a freshly-crafted sarcastic remark on request. One endpoint, no auth, no feelings spared.">
-<meta property="og:url" content="https://ernster.dev/snark-as-a-service/">
-<meta property="og:image" content="https://ernster.dev/snark-as-a-service/assets/snarkapi.png">
+<meta property="og:description" content="A tiny site that hands you a freshly-crafted sarcastic remark, then another. No auth, no feelings spared.">
+<meta property="og:url" content="https://www.snarkapi.com/about/">
+<meta property="og:image" content="https://www.snarkapi.com/about/assets/snarkapi.png">
 <meta property="og:image:alt" content="The SnarkAPI mascot: a smug face sticking its tongue out beside a censored curse">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SnarkAPI: condescension as a service">
-<meta name="twitter:description" content="A tiny FastAPI service that hands you a freshly-crafted sarcastic remark on request.">
-<meta name="twitter:image" content="https://ernster.dev/snark-as-a-service/assets/snarkapi.png">
+<meta name="twitter:description" content="A tiny site that hands you a freshly-crafted sarcastic remark, then another.">
+<meta name="twitter:image" content="https://www.snarkapi.com/about/assets/snarkapi.png">
 <link rel="icon" type="image/png" href="assets/snarkapi.png">
 <link rel="stylesheet" href="styles.css">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"SnarkAPI","applicationCategory":"DeveloperApplication","operatingSystem":"Any","description":"A tiny FastAPI service that returns a freshly-crafted sarcastic remark on request.","url":"https://www.snarkapi.com/","image":"https://ernster.dev/snark-as-a-service/assets/snarkapi.png","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"GBP"},"author":{"@type":"Person","name":"Oliver Ernster","url":"https://www.crankthecode.com/"},"license":"https://www.gnu.org/licenses/gpl-3.0.html"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"SnarkAPI","applicationCategory":"DeveloperApplication","operatingSystem":"Any","description":"A tiny site that types a freshly-crafted sarcastic remark at you, then another.","url":"https://www.snarkapi.com/","image":"https://www.snarkapi.com/about/assets/snarkapi.png","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"GBP"},"author":{"@type":"Person","name":"Oliver Ernster","url":"https://www.crankthecode.com/"},"license":"https://www.gnu.org/licenses/gpl-3.0.html"}</script>
 </head>
 <body>
 <canvas id="rain" aria-hidden="true"></canvas>
@@ -55,7 +55,7 @@
       <div class="demo" aria-label="Live sample of the snark">
         <div class="bar">
           <i></i><i></i><i></i>
-          <span class="addr">GET snarkapi.com/api/v1/sarcasm/</span>
+          <span class="addr">snarkapi.com/quotes.json</span>
         </div>
         <div class="screen" id="demo-screen" aria-live="polite"></div>
       </div>
@@ -81,14 +81,14 @@
       <div class="features">
         <div class="feature">
           <div class="fnum">01</div>
-          <h3>One honest endpoint</h3>
-          <p>A single GET returns a single slight. No keys, no quotas, no
-            "let's hop on a quick call to discuss your needs".</p>
+          <h3>One honest file</h3>
+          <p>A single GET returns every slight at once, as JSON. No keys, no
+            quotas, no "let's hop on a quick call to discuss your needs".</p>
         </div>
         <div class="feature">
           <div class="fnum">02</div>
           <h3>A deep well of slights</h3>
-          <p>Each request draws at random from several hundred hand-written
+          <p>The live site draws at random from several hundred hand-written
             lines of condescension, so it stays fresh long after your
             self-esteem has not.</p>
         </div>
@@ -100,9 +100,10 @@
         </div>
         <div class="feature">
           <div class="fnum">04</div>
-          <h3>Runs on FastAPI</h3>
-          <p>A thin route over a separate service layer, injected rather
-            than hardwired. Even the sarcasm respects the dependency direction.</p>
+          <h3>Built by FastAPI, served as files</h3>
+          <p>The pages are rendered by a FastAPI app at build time and published
+            as static files, so there is no server left to fall over. Even the
+            sarcasm respects the dependency direction.</p>
         </div>
         <div class="feature">
           <div class="fnum">05</div>
@@ -114,9 +115,9 @@
         <div class="feature">
           <div class="fnum">06</div>
           <h3>It degrades, it does not die</h3>
-          <p>If the quote supply goes missing or turns up malformed, the
-            service falls back to a built-in reserve and keeps answering. A
-            joke endpoint returning a 500 is worse than one repeating itself.</p>
+          <p>If the quote list fails to load, the page keeps typing the line it
+            already has rather than going blank. A joke site showing an error
+            is worse than one repeating itself.</p>
         </div>
       </div>
     </div>
@@ -126,19 +127,19 @@
     <div class="container">
       <div class="eyebrow">Use it</div>
       <h2 class="section-title">One request away from being told off</h2>
-      <p class="section-sub">Point anything that speaks HTTP at the endpoint
-        and it answers with a fresh line. Plain text, ready to pipe.</p>
+      <p class="section-sub">Fetch the list once and pick your own line.
+        Anything that speaks HTTP and JSON can do it.</p>
       <div class="terminal">
         <div class="bar"><i></i><i></i><i></i></div>
         <pre><span class="cmt"># ask nicely; get told the truth</span>
-<span class="prompt">$</span> curl https://www.snarkapi.com/api/v1/sarcasm/
+<span class="prompt">$</span> curl -s https://www.snarkapi.com/quotes.json | jq -r '.[]' | shuf -n 1
 You&#8217;ve achieved the rare feat of being wrong in several dimensions.</pre>
       </div>
-      <p class="endpoint">Endpoint: <code>GET /api/v1/sarcasm/</code> on
-        <code>https://www.snarkapi.com</code>. Or just open the
-        <a href="https://www.snarkapi.com/">live site</a> and let it type at you.
-        That is the whole surface: one endpoint and one homepage address, with
-        the old <code>/sarcasm</code> path redirecting to it.</p>
+      <p class="endpoint">File: <code>GET /quotes.json</code> on
+        <code>https://www.snarkapi.com</code>, a JSON list of strings. Or just
+        open the <a href="https://www.snarkapi.com/">live site</a> and let it type
+        at you. The old <code>/api/v1/sarcasm/</code> endpoint is retired: the
+        site is now static files, which cannot pick a line per request.</p>
     </div>
   </section>
 </main>

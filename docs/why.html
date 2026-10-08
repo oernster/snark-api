@@ -4,22 +4,22 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Why SnarkAPI exists: a joke, engineered properly</title>
-<meta name="description" content="Why SnarkAPI was built: it is a gag service that takes its own construction seriously. One honest endpoint, a proper service layer and a live FastAPI deployment, so even the sarcasm respects the dependency direction.">
+<meta name="description" content="Why SnarkAPI was built: it is a gag service that takes its own construction seriously. One honest quote list, a proper service layer and a FastAPI build, so even the sarcasm respects the dependency direction.">
 <meta name="author" content="Oliver Ernster">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#080c1f">
-<link rel="canonical" href="https://ernster.dev/snark-as-a-service/why.html">
+<link rel="canonical" href="https://www.snarkapi.com/about/why.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="SnarkAPI">
 <meta property="og:title" content="Why SnarkAPI exists: a joke, engineered properly">
-<meta property="og:description" content="A gag service that takes its own construction seriously. One honest endpoint, a proper service layer and a live FastAPI deployment, so even the sarcasm respects the dependency direction.">
-<meta property="og:url" content="https://ernster.dev/snark-as-a-service/why.html">
-<meta property="og:image" content="https://ernster.dev/snark-as-a-service/assets/snarkapi.png">
+<meta property="og:description" content="A gag service that takes its own construction seriously. One honest quote list, a proper service layer and a FastAPI build, so even the sarcasm respects the dependency direction.">
+<meta property="og:url" content="https://www.snarkapi.com/about/why.html">
+<meta property="og:image" content="https://www.snarkapi.com/about/assets/snarkapi.png">
 <meta property="og:image:alt" content="The SnarkAPI mascot: a smug face sticking its tongue out beside a censored curse">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Why SnarkAPI exists: a joke, engineered properly">
-<meta name="twitter:description" content="A gag service that takes its own construction seriously. One honest endpoint, a proper service layer and a live FastAPI deployment.">
-<meta name="twitter:image" content="https://ernster.dev/snark-as-a-service/assets/snarkapi.png">
+<meta name="twitter:description" content="A gag service that takes its own construction seriously. One honest quote list, a proper service layer and a FastAPI build.">
+<meta name="twitter:image" content="https://www.snarkapi.com/about/assets/snarkapi.png">
 <link rel="icon" type="image/png" href="assets/snarkapi.png">
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -50,23 +50,24 @@
         give an app a bit of tone, then the deadline arrives and the humour ends up as a handful of
         hardcoded strings scattered through the codebase, never quite consistent and impossible to
         reuse. SnarkAPI is that tone pulled out into one place you can call.</p>
-      <p>So it does exactly one thing: a single GET returns a single fresh insult. No key, no
-        quota, no onboarding call to discuss your needs. A bot, a build script or a bored developer
-        can all reach it the same way and get back a plain line ready to pipe.</p>
+      <p>So it does exactly one thing: it hands out insults. The live site types them at you; a
+        single GET of the quote list hands over the whole supply as JSON. No key, no quota, no
+        onboarding call to discuss your needs. A bot, a build script or a bored developer can all
+        reach it the same way.</p>
       <p>The joke is the surface; the point is underneath. SnarkAPI is a portfolio piece that
         happens to be funny, built on the same clean-architecture discipline as the serious work:
         a thin route over a separate service layer, so even the sarcasm respects the dependency
         direction. It is proof that a gag can be engineered rather than thrown together, which is a
         more convincing demonstration than a straight-faced example of the same shape.</p>
-      <p>What works now is a live FastAPI service at snarkapi.com behind a landing page that types
-        its verdict at you over a moody blue downpour. Open source under GPL-3.0, no feelings
+      <p>What works now is snarkapi.com: a page rendered by FastAPI at build time and served as
+        static files, typing its verdict at you over a moody blue downpour. Open source under GPL-3.0, no feelings
         spared and the drama is not a bug.</p>
       <p>The discipline is the part that is not a joke. Coverage is gated at 100% with branch
         coverage on and the gate sits in the project config, so it applies to a bare test run
         rather than to whoever remembers the flags. The paths worth holding are the unhappy ones:
-        if the quote supply goes missing or turns up in the wrong shape, the service drops to a
-        built-in reserve and keeps answering, because a joke endpoint returning a 500 is worse
-        than one repeating itself. Dependencies are pinned exactly so a redeploy cannot quietly
+        if the quote supply goes missing or turns up in the wrong shape, the build drops to a
+        built-in reserve and the page keeps typing the line it has, because a joke site showing
+        an error is worse than one repeating itself. Dependencies are pinned exactly so a redeploy cannot quietly
         pull a breaking release; the homepage answers on one address only, so a search engine
         sees a single page instead of two copies arguing over the same content.</p>
       <div class="cta" style="justify-content:flex-start;margin-top:30px;">

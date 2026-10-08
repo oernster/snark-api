@@ -10,21 +10,21 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{{ title }}</title>
-    <meta name="description" content="SnarkAPI is a tiny FastAPI service that hands you a freshly-crafted sarcastic remark on request. One endpoint, no auth, no feelings spared." />
+    <meta name="description" content="SnarkAPI is a tiny site that hands you a freshly-crafted sarcastic remark, then another. No auth, no feelings spared." />
     <link rel="canonical" href="https://www.snarkapi.com/" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="SnarkAPI" />
     <meta property="og:url" content="https://www.snarkapi.com/" />
     <meta property="og:title" content="SnarkAPI: professional-grade condescension, on demand" />
-    <meta property="og:description" content="A tiny FastAPI service that hands you a freshly-crafted sarcastic remark on request. One endpoint, no auth, no feelings spared." />
-    <meta property="og:image" content="https://ernster.dev/snark-as-a-service/assets/snarkapi.png" />
+    <meta property="og:description" content="A tiny site that hands you a freshly-crafted sarcastic remark, then another. No auth, no feelings spared." />
+    <meta property="og:image" content="https://www.snarkapi.com/about/assets/snarkapi.png" />
     <meta property="og:image:alt" content="SnarkAPI icon" />
     <meta property="og:locale" content="en_GB" />
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="SnarkAPI: professional-grade condescension, on demand" />
-    <meta name="twitter:description" content="A tiny FastAPI service that hands you a freshly-crafted sarcastic remark on request. One endpoint, no auth, no feelings spared." />
-    <meta name="twitter:image" content="https://ernster.dev/snark-as-a-service/assets/snarkapi.png" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"SnarkAPI","applicationCategory":"DeveloperApplication","operatingSystem":"Any","description":"A tiny FastAPI service that returns a freshly-crafted sarcastic remark on request.","url":"https://www.snarkapi.com/","image":"https://ernster.dev/snark-as-a-service/assets/snarkapi.png","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"GBP"},"author":{"@type":"Person","name":"Oliver Ernster","url":"https://www.crankthecode.com/"},"license":"https://www.gnu.org/licenses/gpl-3.0.html"}</script>
+    <meta name="twitter:description" content="A tiny site that hands you a freshly-crafted sarcastic remark, then another. No auth, no feelings spared." />
+    <meta name="twitter:image" content="https://www.snarkapi.com/about/assets/snarkapi.png" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"SnarkAPI","applicationCategory":"DeveloperApplication","operatingSystem":"Any","description":"A tiny site that types a freshly-crafted sarcastic remark at you, then another.","url":"https://www.snarkapi.com/","image":"https://www.snarkapi.com/about/assets/snarkapi.png","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"GBP"},"author":{"@type":"Person","name":"Oliver Ernster","url":"https://www.crankthecode.com/"},"license":"https://www.gnu.org/licenses/gpl-3.0.html"}</script>
     <link rel="icon" href="/favicon.ico" />
     <style>
       :root {
@@ -184,8 +184,8 @@
 
     <script>
       // Auto-rotating typewriter: type a snark left-to-right, hold for 5s, wipe,
-      // then type a freshly-fetched snark, forever. The next snark is prefetched
-      // during the hold so there's no gap. Only one request is ever in flight.
+      // then type another snark, forever. The next one is picked during the hold
+      // so there's no gap; the quote list is fetched only once.
       (() => {
         const quoteEl = document.getElementById('quote')
         if (!quoteEl) return
@@ -210,28 +210,26 @@
           textNode.nodeValue = str
         }
 
-        // --- Fetch a fresh snark into pendingText. Single in-flight, abortable. ---
-        let inFlight = false
-        let controller = null
+        // --- Pick the next snark into pendingText from /quotes.json. ---
+        // The site is static files, so the choice is made here rather than by
+        // a server. The list is fetched once and kept. A failed load leaves
+        // pendingText alone, so the current line is simply typed again.
+        let quotes = null
         async function fetchNextSnark() {
-          if (inFlight) return
-          inFlight = true
           try {
-            if (controller) controller.abort()
-            controller = new AbortController()
-            const res = await fetch('/api/v1/sarcasm/', {
-              method: 'GET',
-              cache: 'no-store',
-              signal: controller.signal,
-              headers: { Accept: 'text/plain' },
-            })
-            if (!res.ok) throw new Error(`HTTP ${res.status}`)
-            const text = (await res.text()).trim()
-            if (text) pendingText = text
+            if (quotes === null) {
+              const res = await fetch('/quotes.json', { cache: 'no-cache' })
+              if (!res.ok) throw new Error(`HTTP ${res.status}`)
+              const data = await res.json()
+              if (!Array.isArray(data)) throw new Error('quotes.json is not a list')
+              quotes = data.filter((q) => typeof q === 'string' && q.trim())
+            }
+            if (quotes.length === 0) return
+            const others = quotes.filter((q) => q.trim() !== fullText)
+            const pool = others.length ? others : quotes
+            pendingText = pool[Math.floor(Math.random() * pool.length)].trim()
           } catch (e) {
             console.warn('Failed to load snark:', e)
-          } finally {
-            inFlight = false
           }
         }
 

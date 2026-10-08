@@ -1,14 +1,17 @@
 # SnarkAPI
 
-A small FastAPI web service that answers one HTTP request with one freshly
-chosen sarcastic remark. It runs live at
-[snarkapi.com](https://www.snarkapi.com/), which serves both a plain-text API
-endpoint and a landing page that types its verdict at you over an animated
-downpour.
+A small site that types one sarcastic remark after another at you over an
+animated downpour. It runs at [snarkapi.com](https://www.snarkapi.com/) as static
+files on GitHub Pages. A FastAPI app renders every page at build time; the
+homepage picks each line in the browser from a published quote list.
 
-The joke is the surface. The point underneath is that a gag service can still be
-built with a proper service layer, pinned dependencies and a coverage gate that
-does not bend.
+The joke is the surface. The point underneath is that a gag can still be built
+with a proper service layer, pinned dependencies and a coverage gate that does
+not bend.
+
+The plain-text endpoint that once answered `GET /api/v1/sarcasm/` with a fresh
+line is retired. A static host cannot choose a line per request, so the choice
+moved into the page; `/quotes.json` hands over the whole list instead.
 
 > **Commercial licences available.** SnarkAPI is free and open source under the
 > GNU General Public License v3.0. If those terms do not suit what you are
@@ -18,62 +21,67 @@ does not bend.
 
 ## Who it is for
 
-- Anyone who wants a one-line insult from an HTTP call: a bot, a build script, a
-  status page, a CI job that needs a closing remark.
-- Developers looking at a small, complete FastAPI service they can read end to
-  end in a few minutes.
+- Anyone who wants an insult from an HTTP call: a bot, a build script, a status
+  page, a CI job that needs a closing remark. Fetch `/quotes.json` and pick one;
+  `curl -s https://www.snarkapi.com/quotes.json | jq -r '.[]' | shuf -n 1` does it
+  from a shell.
+- Developers looking at a small, complete FastAPI app they can read end to end
+  in a few minutes.
 
 ## Who it is not for
 
 - Anyone needing an SLA, authentication, rate limits or a support contract.
   There are none of those.
-- Anyone wanting a downloadable application. This is a hosted web service; there
-  is no installer, no desktop build and no package on PyPI.
+- Anyone wanting a downloadable application. This is a hosted website; there is
+  no installer, no desktop build and no package on PyPI.
+- Anyone wanting a random line per request from the server. That endpoint is
+  retired; see above.
 - Anyone who wants the quotes to be inoffensive. They are aimed squarely at IT
   people and they do not soften.
 
 ## What it does
 
-- **One endpoint.** `GET /api/v1/sarcasm/` returns a single line as
-  `text/plain`, ready to pipe. No key, no quota, no JSON wrapper.
-- **A rendered homepage.** `GET /` serves the styled page, which fetches a fresh
-  line during each pause so the text keeps changing without a reload.
-- **One indexable URL.** The legacy `/sarcasm` alias now answers `301` to `/`, so
-  search engines see a single homepage rather than two copies of the same
-  content.
-- **Crawler files at the host root.** `/robots.txt` and `/sitemap.xml` are served
-  by the application itself, because a crawler only honours them at the root.
-- **A favicon route.** `/favicon.ico` returns the stored PNG, so the browser's
-  automatic request does not log a 404 on every visit.
-- **A quote supply that cannot take the service down.** The quotes are read
-  from a JSON file on every request, so an edited file takes effect without a
-  restart; if that file is missing, malformed or the wrong shape, the service
-  falls back to a small built-in set and carries on.
+- **One quote file.** `GET /quotes.json` returns the whole supply as a JSON list
+  of strings. No key, no quota.
+- **A typing homepage.** `GET /` serves the styled page with one line already in
+  it. The page loads the quote list once, then picks a different line during
+  each pause so the text keeps changing without a reload.
+- **One indexable URL.** The legacy `/sarcasm` address is a redirect page that
+  sends the browser to `/`, so search engines see a single homepage.
+- **Product pages under `/about/`.** The overview and the "why" page from `docs/`
+  are published beside the app.
+- **Crawler files at the host root.** `/robots.txt` and `/sitemap.xml` sit at the
+  root, because a crawler only honours them there.
+- **A favicon at the root.** `/favicon.ico` holds the stored PNG, so the
+  browser's automatic request does not log a 404 on every visit.
+- **A quote supply that cannot blank the page.** If the quote file fails to load
+  in the browser, the page keeps typing the line it already has. At build time a
+  missing or malformed file drops the first line to a small built-in set.
 - **Analytics on the homepage only.** The rendered page loads Plausible's
-  analytics script; the plain-text endpoint returns the line and nothing else.
+  analytics script; the quote file is plain JSON.
 
 ## Stack
 
 | Concern | Choice |
 | --- | --- |
-| Language | Python 3.11 |
+| Language | Python 3.13, locally and in CI |
 | Web framework | FastAPI on Starlette |
-| Server | uvicorn |
+| Server | uvicorn, in development only |
 | Templating | Jinja2 |
 | Settings | pydantic-settings |
 | Tests | pytest with pytest-cov |
 | Formatting | black (88 columns) |
 | Linting | flake8 (88 columns) |
-| Hosting | Render |
-| Landing page | Static HTML in `docs/`, published by GitHub Pages |
+| Hosting | GitHub Pages, built by `build_site.py` and deployed by CI |
+| Product pages | Static HTML in `docs/`, published under `/about/` |
 | Licence | GPL-3.0 |
 
 ## Layout
 
 ```
 app/
-  main.py                 routes: homepage, redirect, crawler files, favicon
-  api/v1/sarcasm.py       the one API route
+  main.py                 routes: homepage, quote file, redirect, crawler files,
+                          favicon
   services/               quote loading and selection
   models/                 pydantic shapes
   core/config.py          settings
@@ -81,15 +89,16 @@ app/
   templates/              the rendered homepage
   version.py              reads VERSION
 static/                   favicon, robots.txt, sitemap.xml
-docs/                     the GitHub Pages landing site
+docs/                     the product pages, published under /about/
 tests/                    the test suite
 VERSION                   the single source of truth for the version
-stamp_version.py          copies VERSION into the landing site
+stamp_version.py          copies VERSION into the product pages
+build_site.py             renders the app to static files for GitHub Pages
 ```
 
 ## Install and run
 
-Python 3.11 or newer.
+Python 3.13, matching CI.
 
 ```
 python -m venv .venv
@@ -100,8 +109,14 @@ uvicorn app.main:app --reload
 
 On macOS or Linux the activate line is `source .venv/bin/activate`.
 
-That serves the homepage on `http://127.0.0.1:8000/` and the endpoint on
-`http://127.0.0.1:8000/api/v1/sarcasm/`. Interactive API docs are at `/docs`.
+That serves the homepage on `http://127.0.0.1:8000/` and the quote list on
+`http://127.0.0.1:8000/quotes.json`.
+
+To see exactly what will be published, build the static site and serve it:
+
+```
+python build_site.py --serve
+```
 
 `uvicorn` must be started from the repository root: the template directory, the
 static mount and the default quotes path are all resolved relative to the working
@@ -134,18 +149,18 @@ flake8
 
 ## Deployment
 
-There is nothing to build. The service is deployed on Render as a Python web
-service:
+`snarkapi.com` is static files on GitHub Pages. A push to `main` runs
+`.github/workflows/pages.yml`, which:
 
-- Build installs `requirements.txt`.
-- Start runs uvicorn against `app.main:app`, bound to `0.0.0.0` on the port
-  Render supplies.
-- The start command lives in the Render service settings; the repository carries
-  no `render.yaml` or `Procfile`.
+1. runs the test gate;
+2. runs `python build_site.py`, which renders every route into `site/`, turns the
+   `/sarcasm` redirect into a redirect page, copies `docs/` to `/about/` and fails
+   on any internal link that lands on nothing;
+3. publishes `site/` to Pages;
+4. asks the live site for a fixed set of URLs, each of which must answer 200.
 
-`snarkapi.com` points at that service. The landing site under `docs/` is
-separate: GitHub Pages publishes it, then it links to the live service rather
-than embedding it.
+The repository's Pages source must be set to GitHub Actions. The build writes
+`site/CNAME` from `site_url` in `app/core/config.py`.
 
 ## Version
 
