@@ -3,8 +3,9 @@
 #
 # docs/ is published at snarkapi.com/about/, the canonical home. Once this
 # repository took snarkapi.com as its Pages domain, GitHub began redirecting
-# ernster.dev/snark-as-a-service/ there, so the portfolio copy lives in the
-# oernster.github.io repository under snarkapi/ instead. That repository has no
+# its own project path on ernster.dev there, so the portfolio copy lives in the
+# oernster.github.io repository under snarkapi/ instead. Never rename this
+# repository to exactly snarkapi: its project path would then shadow the mirror. That repository has no
 # way of noticing when this one changes; this workflow tells it.
 #
 # The pages keep their canonical links pointing at snarkapi.com, which is what
@@ -72,5 +73,5 @@ jobs:
             echo "Nothing moved; the mirror already matched."
             exit 0
           fi
-          git commit -m "Mirror the SnarkAPI pages from snark-as-a-service@${GITHUB_SHA:0:7}"
+          git commit -m "Mirror the SnarkAPI pages from ${GITHUB_REPOSITORY}@${GITHUB_SHA:0:7}"
           git push
